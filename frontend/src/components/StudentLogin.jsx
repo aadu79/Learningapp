@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
 import './StudentLogin.css';
+import axios from 'axios';
 
 const StudentLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Add login logic here
+    try {
+      const response = await axios.post('http://localhost:5001/student/login', {
+        email,
+        password,
+      });
+      const { token } = response.data;
+      // Store the token, e.g., in localStorage
+      localStorage.setItem('authToken', token);
+      console.log('Successful');
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
     console.log('Logging in with', { email, password });
   };
 
   return (
-    <div className="login-container">
-      <div className="login-content">
+    <div className="student-login-container">
+      <div className="student-login-content">
         <h2>Student Login</h2>
         <form onSubmit={handleLogin}>
           <div className="input-group">

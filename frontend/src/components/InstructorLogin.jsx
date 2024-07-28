@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './InstructorLogin.css';
+import axios from 'axios';
 
 const InstructorLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -9,16 +10,28 @@ const InstructorLogin = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle instructor login logic here
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:5001/instructor/login', {
+        email,
+        password,
+      });
+      // Store the token, e.g., in localStorage
+      const { token } = response.data;
+      localStorage.setItem('authToken', token);
+      console.log('Successful');
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
     console.log('Instructor Login Data:', formData);
   };
 
   return (
-    <div className="login-container">
+    <div className="instructor-login-container">
       <div className="overlay"></div>
-      <div className="login-content">
+      <div className="instructor-login-content">
         <h2>Instructor Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-group">

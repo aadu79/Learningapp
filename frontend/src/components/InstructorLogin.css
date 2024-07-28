@@ -20,7 +20,7 @@ html, body {
   }
   
   /* Container */
-  .login-container {
+  .instructor-login-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -30,7 +30,7 @@ html, body {
     z-index: 1;
   }
   
-  .login-content {
+  .instructor-login-content {
     background-color: rgba(255, 255, 255, 0.95);
     padding: 30px;
     border-radius: 10px;
@@ -40,7 +40,7 @@ html, body {
     text-align: center;
   }
   
-  .login-content h2 {
+  .instructor-login-content h2 {
     color: #e74c3c;
     margin-bottom: 25px;
     font-size: 2.2rem;

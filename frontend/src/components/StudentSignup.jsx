@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './StudentSignup.css';
+import axios from 'axios';
 
 const StudentSignup = () => {
   const [formData, setFormData] = useState({
@@ -16,9 +17,21 @@ const StudentSignup = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle student signup logic here
+    try {
+      const response = await axios.post('http://localhost:5001/student/signup', {
+        name,
+        email,
+        password,
+        phoneNumber,
+        address,
+        role: 'student',
+      });
+      console.log('Successful');
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
     console.log('Student Signup Data:', formData);
   };
 
