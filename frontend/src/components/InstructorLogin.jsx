@@ -1,66 +1,61 @@
 import React, { useState } from 'react';
 import './InstructorLogin.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const InstructorLogin = () => {
-  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/instructor/login', {
+      const response = await axios.post('http://localhost:4999/instructor/login', {
         email,
         password,
       });
-      // Store the token, e.g., in localStorage
       const { token } = response.data;
+      // Store the token, e.g., in localStorage
       localStorage.setItem('authToken', token);
       console.log('Successful');
+      navigate('/instructor-dashboard');
     } catch (error) {
       console.error('Error logging in:', error);
     }
-    console.log('Instructor Login Data:', formData);
+    console.log('Logging in with', { email, password });
   };
 
   return (
     <div className="instructor-login-container">
-      <div className="overlay"></div>
       <div className="instructor-login-content">
         <h2>Instructor Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogin}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
+            <input 
+              type="email" 
+              id="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
             />
           </div>
           <div className="input-group">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
+            <input 
+              type="password" 
+              id="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              required 
             />
           </div>
           <button type="submit" className="btn login-btn">Login</button>
         </form>
-        <div className="signup-prompt">
-          Don't have an account? <a href="/instructor-signup">Sign Up</a>
-        </div>
+        <p className="signup-prompt">
+          Don't have an account? <a href="/student-signup">Sign up</a>
+        </p>
       </div>
     </div>
   );

@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import './StudentLogin.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const StudentLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/student/login', {
+      const response = await axios.post('http://localhost:4999/student/login', {
         email,
         password,
       });
@@ -17,6 +19,8 @@ const StudentLogin = () => {
       // Store the token, e.g., in localStorage
       localStorage.setItem('authToken', token);
       console.log('Successful');
+       // Redirect to the StudentDashboard
+       navigate('/student-dashboard');
     } catch (error) {
       console.error('Error logging in:', error);
     }

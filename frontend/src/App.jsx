@@ -8,6 +8,8 @@ import StudentLogin from './components/StudentLogin';
 import StudentSignup from './components/StudentSignup';
 import InstructorLogin from './components/InstructorLogin';
 import InstructorSignup from './components/InstructorSignup';
+import StudentDashboard from './components/StudentDashboard';
+import InstructorDashboard from './components/InstructorDashboard';
 
 const App = () => {
   return (
@@ -17,6 +19,8 @@ const App = () => {
       <Route path='/student-signup' element={<StudentSignup/>}></Route>
       <Route path='/instructor-login' element={<InstructorLogin/>}></Route>
       <Route path='/instructor-signup' element={<InstructorSignup/>}></Route>
+      <Route path='/student-dashboard' element={<StudentDashboard/>}></Route>
+      <Route path='/instructor-dashboard' element={<InstructorDashboard/>}></Route>
 
     </Routes>
   );

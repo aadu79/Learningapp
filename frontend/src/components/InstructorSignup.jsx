@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './InstructorSignup.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const InstructorSignup = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const InstructorSignup = () => {
     phoneNumber: '',
     address: ''
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,19 +22,24 @@ const InstructorSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/instructor/signup', {
+      // Destructure the form data for ease of use
+      const { name, email, password, phoneNumber, address } = formData;
+      
+      // Send the signup data to the server
+      const response = await axios.post('http://localhost:4999/instructor/signup', {
         name,
         email,
         password,
         phoneNumber,
         address,
-        role: 'instructor',
+        role: 'instructor'
       });
-      console.log('Successful');
+
+      console.log('Instructor registered successfully');
+      navigate('/instructor-dashboard');
     } catch (error) {
-      console.error('Error signing up:', error);
+      console.error('Error signing up:', error.response?.data || error.message);
     }
-    console.log('Instructor Signup Data:', formData);
   };
 
   return (
@@ -109,7 +116,7 @@ const InstructorSignup = () => {
           <button type="submit" className="btn signup-btn">Sign Up</button>
         </form>
         <div className="login-prompt">
-          Already have an account? <a href="/instructor-login">Login</a>
+          Already have an account? <a href="/student-login">Login</a>
         </div>
       </div>
     </div>

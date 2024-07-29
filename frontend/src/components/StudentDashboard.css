@@ -1,0 +1,125 @@
+/* General Styles */
+.student-dashboard {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff; /* White background to match the login page */
+    color: #333; /* Dark text color for readability */
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 1200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .student-dashboard:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Heading Styles */
+  .student-dashboard h1 {
+    font-size: 2.5rem;
+    color: #e74c3c; /* Primary color from login page */
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeIn 1s ease-out;
+  }
+  
+  .student-dashboard h2 {
+    font-size: 2rem;
+    color: #e74c3c; /* Matching heading color */
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+  }
+  
+  .student-dashboard h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #e74c3c;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  /* Course List */
+  .student-dashboard ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .student-dashboard li {
+    background-color: #fff; /* White background for list items */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeInUp 0.5s ease-out;
+  }
+  
+  .student-dashboard li:hover {
+    background-color: #f9f9f9; /* Light gray background on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+  }
+  
+  /* Buttons */
+  .student-dashboard button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: linear-gradient(to right, #e74c3c, #e67e22); /* Gradient color from login page */
+    color: white;
+    transition: background 0.3s, transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .student-dashboard button:hover {
+    background: linear-gradient(to right, #c0392b, #d35400); /* Darker gradient on hover */
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideIn {
+    from {
+      width: 0;
+    }
+    to {
+      width: 60px;
+    }
+  }
+  
+  

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './StudentSignup.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const StudentSignup = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,7 @@ const StudentSignup = () => {
     phoneNumber: '',
     address: ''
   });
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -20,19 +21,24 @@ const StudentSignup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/student/signup', {
+      // Destructure the form data for ease of use
+      const { name, email, password, phoneNumber, address } = formData;
+      
+      // Send the signup data to the server
+      const response = await axios.post('http://localhost:4999/student/signup', {
         name,
         email,
         password,
         phoneNumber,
         address,
-        role: 'student',
+        role: 'student'
       });
-      console.log('Successful');
+
+      console.log('Student registered successfully');
+      navigate('/student-dashboard');
     } catch (error) {
-      console.error('Error signing up:', error);
+      console.error('Error signing up:', error.response?.data || error.message);
     }
-    console.log('Student Signup Data:', formData);
   };
 
   return (
@@ -117,4 +123,5 @@ const StudentSignup = () => {
 };
 
 export default StudentSignup;
+
 
