@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './StudentSignup.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -23,9 +23,9 @@ const StudentSignup = () => {
     try {
       // Destructure the form data for ease of use
       const { name, email, password, phoneNumber, address } = formData;
-      
+  
       // Send the signup data to the server
-      const response = await axios.post('http://localhost:4999/student/signup', {
+      await axios.post('http://localhost:5999/student/signup', {
         name,
         email,
         password,
@@ -33,7 +33,7 @@ const StudentSignup = () => {
         address,
         role: 'student'
       });
-
+  
       console.log('Student registered successfully');
       navigate('/student-dashboard');
     } catch (error) {

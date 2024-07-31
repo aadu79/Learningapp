@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import './InstructorLogin.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -11,7 +11,7 @@ const InstructorLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4999/instructor/login', {
+      const response = await axios.post('http://localhost:5999/instructor/login', {
         email,
         password,
       });
@@ -54,7 +54,7 @@ const InstructorLogin = () => {
           <button type="submit" className="btn login-btn">Login</button>
         </form>
         <p className="signup-prompt">
-          Don't have an account? <a href="/student-signup">Sign up</a>
+          Dont have an account? <a href="/student-signup">Sign up</a>
         </p>
       </div>
     </div>

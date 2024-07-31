@@ -10,9 +10,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-app.use('/api/courses', require('./routes/courses'));
-app.use('/api/students', require('./routes/students'));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files
+
 
 
 // Student Signup
@@ -43,29 +41,29 @@ app.post('/student/signup', async (req, res) => {
 });
   
   // Student Login
-  app.post('/student/login', async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      const user = await User.findOne({ email, role: 'student' });
-  
-      if (!user) {
-        return res.status(404).send('Student not found');
-      }
-  
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-      if (!isPasswordValid) {
-        return res.status(401).send('Invalid credentials');
-      }
-      const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+app.post('/student/login', async (req, res) => {
+  const { email, password } = req.body;
 
-      res.status(200).json({ token });
-      res.status(200).send('Student logged in successfully');
-    } catch (error) {
-      res.status(400).send('Error logging in student');
+  try {
+    const user = await User.findOne({ email, role: 'student' });
+
+    if (!user) {
+      return res.status(404).send('Student not found');
     }
-  });
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).send('Invalid credentials');
+    }
+
+    const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(400).send('Error logging in student');
+  }
+});
   
   // Instructor Signup
   app.post('/instructor/signup', async (req, res) => {
@@ -94,30 +92,30 @@ app.post('/student/signup', async (req, res) => {
     }
   });
   
-  // Instructor Login
-  app.post('/instructor/login', async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      const user = await User.findOne({ email, role: 'instructor' });
-  
-      if (!user) {
-        return res.status(404).send('Instructor not found');
-      }
-  
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-  
-      if (!isPasswordValid) {
-        return res.status(401).send('Invalid credentials');
-      }
-      const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+ // Instructor Login
+app.post('/instructor/login', async (req, res) => {
+  const { email, password } = req.body;
 
-      res.status(200).json({ token });
-      res.status(200).send('Instructor logged in successfully');
-    } catch (error) {
-      res.status(400).send('Error logging in instructor');
+  try {
+    const user = await User.findOne({ email, role: 'instructor' });
+
+    if (!user) {
+      return res.status(404).send('Instructor not found');
     }
-  });
 
-const PORT = 4999;
-app.listen(PORT, () => console.log(`Server running on port 4999`));
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).send('Invalid credentials');
+    }
+
+    const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(400).send('Error logging in instructor');
+  }
+});
+
+const PORT = 5999;
+app.listen(PORT, () => console.log(`Server running on port 5999`));
