@@ -18,7 +18,7 @@ const HomePage = () => {
   return (
     <div className="homepage-container">
       <header className="header-section">
-        <img src="https://wallpapers.com/images/featured/minimalist-7xpryajznty61ra3.jpg" alt="Header" className="header-image" />
+        <img src="https://images.squarespace-cdn.com/content/v1/5ac0f1df5cfd7975ce82f777/b5c54f52-7b9b-4eb3-ae01-acb6ac3fc7d3/casual-life-3d-likes.png?format=750w" alt="Header" className="header-image" />
         <div className="header-content">
           <h1>Online Learning Platform</h1>
           <p>Explore our wide range of courses and start your learning journey today.</p>

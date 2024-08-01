@@ -60,7 +60,7 @@ const Navbar = () => {
           >
             Learning app
           </Typography>
-
+          <Box sx={{ flexGrow: 8 }} />
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -117,7 +117,7 @@ const Navbar = () => {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -136,7 +136,7 @@ const Navbar = () => {
               <IconButton
             //    onClick={handleOpenUserMenu} 
               sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="!" src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
