@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
-
+const courseModel=require('./model/Course');
 
 
 // Student Signup
@@ -116,6 +116,54 @@ app.post('/instructor/login', async (req, res) => {
     res.status(400).send('Error logging in instructor');
   }
 });
+
+//Instructor Create Course
+app.post('/addcourse',async(req,res)=>{
+  try{
+      var item=req.body; //the attached data sent  in req.body is assigned to item
+      const data_add=new courseModel(item);
+      const data= await data_add.save();
+      res.send('Course created successful');
+  }
+  catch (error){
+    console.log(error);
+  }
+})
+
+//Instructor Course Get
+app.get('/coursedetails', async(req,res)=>{
+
+  try{
+      const data = await courseModel.find();
+res.send(data);
+  }
+
+  catch(error){
+      console.log(error);
+  }
+
+})
+
+//Instructor Course Update
+app.put('/editcourse/:id',async(req,res)=>{
+  try {
+      const data= await courseModel.findByIdAndUpdate(req.params.id,req.body)
+      res.send('Course updated successful')
+  } catch (error) {
+      console.log(error);
+  }
+})
+
+
+//Instructor Course Delete
+app.delete('/deletecourse/:id',async(req,res)=>{
+  try {
+      const data= await courseModel.findByIdAndDelete(req.params.id)
+      res.send('Course deleted successful')
+  } catch (error) {
+      console.log(error);
+  }
+})
 
 const PORT = 5999;
 app.listen(PORT, () => console.log(`Server running on port 5999`));

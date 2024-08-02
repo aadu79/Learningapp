@@ -1,0 +1,105 @@
+/* General Styles */
+html, body {
+    font-family: 'Arial', sans-serif;
+    background-color: white;
+    background-image: none;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Container */
+.instructor-addcourse-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.instructor-addcourse-content {
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly increased opacity */
+    padding: 40px; /* Increased padding for a better look */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 500px; /* Increased max-width for a better layout */
+    width: 100%;
+    text-align: center;
+}
+
+.instructor-addcourse-content h2 {
+    color: #e74c3c;
+    margin-bottom: 25px;
+    font-size: 2.2rem;
+    font-weight: bold;
+}
+
+/* TextField Styles */
+.MuiFormControl-root {
+    width: 100% !important;
+}
+
+.MuiInputBase-root {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.MuiInputBase-input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+.MuiInputBase-input:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 5px rgba(230, 126, 34, 0.5);
+}
+
+/* Button Styles */
+.btn.addcourse-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    background: linear-gradient(to right, #e74c3c, #e67e22);
+    color: white;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.btn.addcourse-btn:hover {
+    background: linear-gradient(to right, #c0392b, #d35400);
+    transform: scale(1.05);
+}
+
+/* Form Group */
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.form-group input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 5px rgba(230, 126, 34, 0.5);
+}

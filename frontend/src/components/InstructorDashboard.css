@@ -1,59 +1,101 @@
 /* General Styles */
-.instructor-dashboard {
-    font-family: 'Arial', sans-serif;
-    background-color: #ffffff;
-    color: #333;
-    padding: 20px;
-    margin: 0 auto;
-    max-width: 1200px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    position: relative;
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #021932 !important;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Main Content */
+main {
+  margin-top: 20px;
+  text-align: center;
+}
+
+main h2 {
+  font-size: 2.5rem;
+  color: #f4f4f4e8;
+  margin-bottom: 20px;
+}
+
+/* Course List */
+.courses-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.course-item {
+  background-color: #ccc9c9dc;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  width: calc(25% - 20px);
+  max-width: 300px;
+  text-align: left;
+  position: relative;
+}
+
+.course-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.course-image {
+  width: 100%;
+  height: auto;
+}
+
+.course-content {
+  padding: 20px;
+}
+
+.course-content h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #145078;
+}
+
+.course-content p {
+  color: #666;
+  font-size: 1rem;
+}
+/* Button Styles */
+.update-button {
+  background-color: #8e44ad !important; /* Matching the instructor signup button color */
+  color: #fff;
+  transition: background 0.3s, transform 0.3s;
+  margin-right: 10px;
+}
+
+.delete-button {
+  background-color: #e74c3c !important; /* Matching the student login button color */
+  color: #fff;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.update-button:hover{
+  background-color: #7a3b95 !important;
+  transform: scale(1.05);
+}
+
+.delete-button:hover{
+  background-color: #c44032 !important;
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .courses-list {
+    flex-direction: column;
+    align-items: center;
   }
-  
-  .instructor-dashboard h1 {
-    font-size: 2.5rem;
-    color: #e74c3c;
-    text-align: center;
-    margin-bottom: 30px;
+
+  .course-item {
+    width: 100%;
+    max-width: none;
   }
-  
-  .course-form {
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
-  }
-  
-  .course-form input,
-  .course-form textarea {
-    display: block;
-    width: calc(100% - 20px);
-    margin: 10px auto;
-    padding: 10px;
-    background-color: #ffffff; /* Background color for text entry fields */
-  color: #333; /* Text color inside the fields */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-  }
-  
-  .course-form button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 25px;
-    background: linear-gradient(to right, #e74c3c, #e67e22);
-    color: white;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.3s;
-  }
-  
-  .course-form button:hover {
-    background: linear-gradient(to right, #c0392b, #d35400);
-    transform: scale(1.05);
-  }
-  
-  .instructor-dashboard ul {
-    list-style-type: none;
-    padding: 0
-  }
+}
