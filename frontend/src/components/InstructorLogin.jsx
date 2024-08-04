@@ -18,12 +18,10 @@ const InstructorLogin = () => {
       const { token } = response.data;
       // Store the token, e.g., in localStorage
       localStorage.setItem('authToken', token);
-      console.log('Successful');
       navigate('/instructor-dashboard');
     } catch (error) {
-      console.error('Error logging in:', error);
+      alert('Incorrect e-mail or password');
     }
-    console.log('Logging in with', { email, password });
   };
 
   return (

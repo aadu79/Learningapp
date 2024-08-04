@@ -4,6 +4,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add';
 import './InstructorDashboard.css';
 
 const InstructorDashboard = () => {
@@ -36,11 +37,28 @@ const InstructorDashboard = () => {
     const update_Value = (val) => {
         navigate('/instructor-addcourse', { state: { val } });
     };
+    const handleCreateNew = () => {
+        navigate('/instructor-addcourse');
+      };
 
     return (
         <div className="homepage-container">
             <main>
-                <h2>Instructor Dashboard</h2>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h2>Instructor Dashboard</h2>
+        <div style={{ marginLeft: 'auto' }}>
+          <Button
+          className="create-new-button"
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={handleCreateNew}
+            style={{ borderRadius: '20px', padding: '10px 20px' }}
+          >
+            Create New
+          </Button>
+        </div>
+      </div>
                 <div className="courses-list">
                     {rows.map((row, index) => (
                         <div key={index} className="course-item">

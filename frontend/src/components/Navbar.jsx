@@ -41,6 +41,8 @@ const Navbar = () => {
   const handlePageClick = (page) => {
     if (page === 'Home') {
       navigate('/');
+    } else if (page === 'Courses') {
+      navigate('/', { state: { scrollTo: 'coursesRef' } }); // Pass state to scroll to courses section
     } else {
       // Add navigation for other pages as needed
     }

@@ -18,13 +18,11 @@ const StudentLogin = () => {
       const { token } = response.data;
       // Store the token, e.g., in localStorage
       localStorage.setItem('authToken', token);
-      console.log('Successful');
        // Redirect to the StudentDashboard
        navigate('/student-dashboard');
     } catch (error) {
-      console.error('Error logging in:', error);
+      alert('Incorrect email or password');
     }
-    console.log('Logging in with', { email, password });
   };
 
   return (

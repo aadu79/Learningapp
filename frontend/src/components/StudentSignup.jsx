@@ -34,10 +34,10 @@ const StudentSignup = () => {
         role: 'student'
       });
   
-      console.log('Student registered successfully');
+      alert('Student registered successfully');
       navigate('/student-dashboard');
     } catch (error) {
-      console.error('Error signing up:', error.response?.data || error.message);
+      alert('Error occured in signing up.Try again!');
     }
   };
 

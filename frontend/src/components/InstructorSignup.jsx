@@ -35,10 +35,10 @@ const InstructorSignup = () => {
         role: 'instructor'
       });
   
-      console.log('Instructor registered successfully');
+      alert('Instructor registered successfully');
       navigate('/instructor-dashboard');
     } catch (error) {
-      console.error('Error signing up:', error.response?.data || error.message);
+      alert('Error occured in signing up.Try again!');
     }
   };
 

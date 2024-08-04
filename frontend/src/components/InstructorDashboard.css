@@ -17,6 +17,7 @@ main h2 {
   font-size: 2.5rem;
   color: #f4f4f4e8;
   margin-bottom: 20px;
+  
 }
 
 /* Course List */
@@ -86,6 +87,21 @@ main h2 {
   background-color: #c44032 !important;
   transform: scale(1.05);
 }
+
+/* Create New Button Styles */
+.create-new-button {
+  background: linear-gradient(to right, #e34c3bec, #cb6b17eb);
+  color: #fff !important;
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.create-new-button:hover {
+  background: linear-gradient(to right, #d34130ec, #c06414eb);
+  transform: scale(1.05);
+}
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect,useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './HomePage.css';
 import axios from 'axios';
 
 const HomePage = () => {
   const [courses, setCourses] = useState([]);
+  const coursesRef = useRef(null);
 
   useEffect(() => {
     fetchCourses();
@@ -43,7 +44,7 @@ const HomePage = () => {
         </div>
       </header>
       <main>
-        <h2>Our Popular Courses</h2>
+        <h2 ref={coursesRef}>Our Popular Courses</h2>
         <div className="courses-list">
           {courses.map(course => (
             <div key={course._id} className="course-item">
