@@ -15,32 +15,33 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* background: rgba(255, 253, 253, 0.5); */
+    /* background: rgba(255, 255, 255, 0.5); */
     z-index: -1;
   }
   
   /* Container */
-  .instructor-login-container {
+  .signup-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    min-width: 55vh;
     padding: 20px;
     position: relative;
     z-index: 1;
   }
   
-  .instructor-login-content {
-    background-color: rgba(255, 255, 255, 0.777);
+  .signup-content {
+    background-color: rgba(255, 255, 255, 0.95);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
+    max-width: 500px;
     width: 100%;
     text-align: center;
   }
   
-  .instructor-login-content h2 {
+  .signup-content h2 {
     color: #e74c3c;
     margin-bottom: 25px;
     font-size: 2.2rem;
@@ -60,7 +61,8 @@ html, body {
     font-size: 1rem;
   }
   
-  .input-group input {
+  .input-group input,
+  .input-group textarea {
     width: calc(100% - 20px);
     padding: 10px;
     border: 1px solid #ddd;
@@ -68,13 +70,42 @@ html, body {
     font-size: 1rem;
     outline: none;
     transition: border-color 0.3s;
+    background-color: rgba(118, 118, 118, 0.227); /* Optional: to match the theme */
+  color: #242424e3; /* Set text color to a shade of white */
   }
   
-  .input-group input:focus {
+  .input-group input:focus,
+  .input-group textarea:focus {
     border-color: #e67e22;
   }
   
-  .btn.login-btn {
+  /* Common Role Field Styles */
+.input-group select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: rgba(118, 118, 118, 0.227); /* Optional: to match the theme */
+    color: #242424e3; /* Set text color to a shade of white */
+  }
+  
+  .input-group select:focus {
+    border-color: #e67e22;
+    box-shadow: 0 0 5px rgba(230, 126, 34, 0.5);
+  }
+  
+  /* Specific Styles for Signup Page */
+  .signup-container .input-group select {
+    background-color: rgba(208, 208, 208, 0.95); /* Light background */
+    border: 1px solid #ddd;
+    color: #333;
+  }
+  
+  
+  .btn.signup-btn {
     width: 100%;
     padding: 12px;
     border: none;
@@ -86,25 +117,26 @@ html, body {
     transition: background 0.3s, transform 0.3s;
   }
   
-  .btn.login-btn:hover {
+  .btn.signup-btn:hover {
     background: linear-gradient(to right, #c0392b, #d35400);
     transform: scale(1.05);
   }
   
-  .signup-prompt {
+  .login-prompt {
     margin-top: 20px;
     font-size: 0.9rem;
     color: #333;
   }
   
-  .signup-prompt a {
+  .login-prompt a {
     color: #e67e22;
     text-decoration: none;
     font-weight: bold;
     transition: color 0.3s;
   }
   
-  .signup-prompt a:hover {
+  .login-prompt a:hover {
     color: #c0392b;
   }
+  
   

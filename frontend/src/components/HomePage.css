@@ -62,7 +62,7 @@ body {
 
 .auth-buttons {
   display: flex;
-  justify-content: flex-end; /* Align buttons to the right */
+  justify-content: center; /* Align buttons to the right */
   gap: 15px;
 }
 
@@ -80,11 +80,11 @@ body {
   background-color: #e74c3c;
 }
 
-.auth-buttons .student-signup {
+.auth-buttons .login {
   background-color: #d35400;
 }
 
-.auth-buttons .instructor-login {
+.auth-buttons .signup {
   background-color: #c0392b;
 }
 

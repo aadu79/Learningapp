@@ -13,109 +13,66 @@ app.use(cors());
 const courseModel=require('./model/Course');
 
 
-// Student Signup
-app.post('/student/signup', async (req, res) => {
-  const { name, email, password, phoneNumber, address } = req.body;
+// Unified Login
+app.post('/login', async (req, res) => {
+  const { email, password, role } = req.body;
+
+  if (!['student', 'instructor'].includes(role)) {
+    return res.status(400).send('Invalid role');
+  }
+
+  try {
+    const user = await User.findOne({ email, role });
+
+    if (!user) {
+      return res.status(404).send(`${role.charAt(0).toUpperCase() + role.slice(1)} not found`);
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return res.status(401).send('Invalid credentials');
+    }
+
+    const token = jwt.sign({ userId: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
+
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(400).send('Error logging in user');
+  }
+});
+
+// Unified Signup
+app.post('/signup', async (req, res) => {
+  const { name, email, password, phoneNumber, address, role } = req.body;
+
+  if (!['student', 'instructor'].includes(role)) {
+    return res.status(400).send('Invalid role');
+  }
 
   try {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create a new user with the role 'student'
+    // Create a new user
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
       phoneNumber,
       address,
-      role: 'student',
+      role,
     });
 
     // Save the new user in the database
     await newUser.save();
-    res.status(201).send('Student registered successfully');
+    res.status(201).send(`${role.charAt(0).toUpperCase() + role.slice(1)} registered successfully`);
   } catch (error) {
-    console.error('Error registering student:', error);
-    res.status(400).send('Error registering student');
+    console.error('Error registering user:', error);
+    res.status(400).send('Error registering user');
   }
 });
-  
-  // Student Login
-app.post('/student/login', async (req, res) => {
-  const { email, password } = req.body;
 
-  try {
-    const user = await User.findOne({ email, role: 'student' });
-
-    if (!user) {
-      return res.status(404).send('Student not found');
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(401).send('Invalid credentials');
-    }
-
-    const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
-
-    res.status(200).json({ token });
-  } catch (error) {
-    res.status(400).send('Error logging in student');
-  }
-});
-  
-  // Instructor Signup
-  app.post('/instructor/signup', async (req, res) => {
-    const { name, email, password, phoneNumber, address } = req.body;
-  
-    try {
-      // Hash the password
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      // Create a new user with the role 'instructor'
-      const newUser = new User({
-        name,
-        email,
-        password: hashedPassword,
-        phoneNumber,
-        address,
-        role: 'instructor',
-      });
-  
-      // Save the new user in the database
-      await newUser.save();
-      res.status(201).send('Instructor registered successfully');
-    } catch (error) {
-      console.error('Error registering instructor:', error);
-      res.status(400).send('Error registering instructor');
-    }
-  });
-  
- // Instructor Login
-app.post('/instructor/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const user = await User.findOne({ email, role: 'instructor' });
-
-    if (!user) {
-      return res.status(404).send('Instructor not found');
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(401).send('Invalid credentials');
-    }
-
-    const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
-
-    res.status(200).json({ token });
-  } catch (error) {
-    res.status(400).send('Error logging in instructor');
-  }
-});
 
 //Instructor Create Course
 app.post('/addcourse',async(req,res)=>{

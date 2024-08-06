@@ -28,17 +28,11 @@ const HomePage = () => {
           <h1>Online Learning Platform</h1>
           <p>Explore our wide range of courses and start your learning journey today.</p>
           <div className="auth-buttons">
-            <Link to="/student-login">
-              <button className="btn student-login">Student Login</button>
+            <Link to="/login">
+              <button className="btn login">Login</button>
             </Link>
-            <Link to="/student-signup">
-              <button className="btn student-signup">Student Signup</button>
-            </Link>
-            <Link to="/instructor-login">
-              <button className="btn instructor-login">Instructor Login</button>
-            </Link>
-            <Link to="/instructor-signup">
-              <button className="btn instructor-signup">Instructor Signup</button>
+            <Link to="/signup">
+              <button className="btn signup">Signup</button>
             </Link>
           </div>
         </div>
