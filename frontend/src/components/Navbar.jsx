@@ -1,56 +1,78 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import './Navbar.css';
 
-const pages = ['Home', 'Courses', 'About'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 const Navbar = () => {
   const navigate = useNavigate();
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [userRole, setUserRole] = useState('');
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  useEffect(() => {
+    const token = localStorage.getItem('authToken'); // Ensure 'authToken' matches the token name used
+    if (token) {
+      try {
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        setUserRole(decodedToken.role);
+      } catch (error) {
+        console.error('Failed to decode token:', error);
+      }
+    }
+  }, []);
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const handlePageClick = (page) => {
-    if (page === 'Home') {
-      navigate('/');
-    } else if (page === 'Courses') {
-      navigate('/', { state: { scrollTo: 'coursesRef' } }); // Pass state to scroll to courses section
-    } else {
-      // Add navigation for other pages as needed
+  const handleMenuClick = (setting) => {
+    setAnchorElUser(null);
+    if (setting === 'Courses') {
+      navigate('/student-viewcourse');
+    } else if (setting === 'Dashboard') {
+      if (userRole === 'instructor') {
+        navigate('/instructor-dashboard');
+      } else if (userRole === 'student') {
+        navigate('/student-dashboard');
+      }
+    } else if (setting === 'Logout') {
+      localStorage.removeItem('authToken');
+      setUserRole('');
+      navigate('/login'); 
     }
-    handleCloseNavMenu();
   };
 
+  
+  const menuItems = [
+    ...(userRole === 'student'
+      ? [
+          <MenuItem key="courses" onClick={() => handleMenuClick('Courses')}><Typography textAlign="center">Courses</Typography></MenuItem>,
+          <MenuItem key="dashboard" onClick={() => handleMenuClick('Dashboard')}><Typography textAlign="center">Dashboard</Typography></MenuItem>,
+        ]
+      : userRole === 'instructor'
+      ? [
+          <MenuItem key="dashboard" onClick={() => handleMenuClick('Dashboard')}><Typography textAlign="center">Dashboard</Typography></MenuItem>,
+        ]
+      : [] // No menu items if not logged in
+    ),
+    <MenuItem key="logout" onClick={() => handleMenuClick('Logout')}><Typography textAlign="center">Logout</Typography></MenuItem>
+  ];
+
   return (
-    <AppBar position="static" className="navbar"> 
+    <AppBar position="static" className="navbar">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -69,80 +91,13 @@ const Navbar = () => {
               textDecoration: 'none',
             }}
           >
-            Learning app
+            Learning App
           </Typography>
-          <Box sx={{ flexGrow: 8 }} />
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={() => handlePageClick(page)}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={() => handlePageClick(page)}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
-
+          <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="!" src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" />
+                <Avatar alt="User Avatar" src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -161,11 +116,7 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {menuItems}
             </Menu>
           </Box>
         </Toolbar>
@@ -175,3 +126,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

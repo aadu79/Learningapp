@@ -12,6 +12,7 @@ import Navbar from './components/Navbar';
 import InstructorAddcourse from './components/InstructorAddcourse';
 import SignupPage from './components/SignupPage';
 import LoginPage from './components/LoginPage';
+import StudentViewcourse from './components/StudentViewcourse';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
       <Route path='/student-dashboard' element={<StudentDashboard/>}></Route>
       <Route path='/instructor-dashboard' element={<InstructorDashboard/>}></Route>
       <Route path='/instructor-addcourse' element={<InstructorAddcourse/>}></Route>
+      <Route path='/student-viewcourse' element={<StudentViewcourse/>}></Route>
     </Routes>
     </>
   );

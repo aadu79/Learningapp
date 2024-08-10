@@ -9,6 +9,7 @@ import './InstructorDashboard.css';
 
 const InstructorDashboard = () => {
     const [rows, setRows] = useState([]);
+    const [expandedCourseId, setExpandedCourseId] = useState(null); // State to track expanded course
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,7 +29,7 @@ const InstructorDashboard = () => {
         try {
             await axios.delete(`http://localhost:5999/deletecourse/${id}`);
             alert('Course deleted');
-            fetchCourses();  // Refresh the list after deletion
+            fetchCourses();  
         } catch (error) {
             console.log(error);
         }
@@ -37,28 +38,33 @@ const InstructorDashboard = () => {
     const update_Value = (val) => {
         navigate('/instructor-addcourse', { state: { val } });
     };
+
     const handleCreateNew = () => {
         navigate('/instructor-addcourse');
-      };
+    };
+
+    const toggleExpand = (id) => {
+        setExpandedCourseId(expandedCourseId === id ? null : id); 
+    };
 
     return (
         <div className="homepage-container">
             <main>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <h2>Instructor Dashboard</h2>
-        <div style={{ marginLeft: 'auto' }}>
-          <Button
-          className="create-new-button"
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={handleCreateNew}
-            style={{ borderRadius: '20px', padding: '10px 20px' }}
-          >
-            Create New
-          </Button>
-        </div>
-      </div>
+                    <h2>Instructor Dashboard</h2>
+                    <div style={{ marginLeft: 'auto' }}>
+                        <Button
+                            className="create-new-button"
+                            variant="contained"
+                            color="primary"
+                            startIcon={<AddIcon />}
+                            onClick={handleCreateNew}
+                            style={{ borderRadius: '20px', padding: '10px 20px' }}
+                        >
+                            Create New
+                        </Button>
+                    </div>
+                </div>
                 <div className="courses-list">
                     {rows.map((row, index) => (
                         <div key={index} className="course-item">
@@ -71,6 +77,17 @@ const InstructorDashboard = () => {
                                 <Typography sx={{ mb: 1.5 }} color="text.secondary">
                                     {row.courseCategory}
                                 </Typography>
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => toggleExpand(row._id)}
+                                >
+                                    {expandedCourseId === row._id ? 'Hide Details' : 'Show Details'}
+                                </Button>
+                                {expandedCourseId === row._id && (
+                                    <Typography sx={{ mt: 1 }} color="text.secondary">
+                                        <strong>Content URL:</strong> <a href={row.courseContent} target="_blank" rel="noopener noreferrer">{row.courseContent}</a>
+                                    </Typography>
+                                )}
                                 <CardActions>
                                     <Button className="update-button" variant='contained' onClick={() => update_Value(row)}>Update</Button>
                                     <Button className="delete-button" variant='contained' onClick={() => del_Value(row._id)}>Delete</Button>

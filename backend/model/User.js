@@ -7,8 +7,8 @@ const UserSchema = new mongoose.Schema({
   phoneNumber: { type: String },
   address: { type: String },
   role: { type: String, enum: ['student', 'instructor'], required: true },
-  
+  enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }] // Ensure Course model is referenced correctly
 });
 
-const UserData=mongoose.model('user',UserSchema);
-module.exports=UserData
+const User = mongoose.model('User', UserSchema); // Consistent model naming
+module.exports = User;

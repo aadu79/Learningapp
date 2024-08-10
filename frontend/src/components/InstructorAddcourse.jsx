@@ -11,7 +11,8 @@ const InstructorAddcourse = () => {
     courseTitle: "",
     courseDescription: "",
     courseCategory: "",
-    courseImage: ""
+    courseImage: "",
+    courseContent: "" 
   });
 
   const location = useLocation();
@@ -37,14 +38,15 @@ const InstructorAddcourse = () => {
     }
   }
 
- useEffect(() => {
+  useEffect(() => {
     if (location.state != null) {
       setForm({
         ...form,
         courseTitle: location.state.val.courseTitle,
         courseDescription: location.state.val.courseDescription,
         courseCategory: location.state.val.courseCategory,
-        courseImage: location.state.val.courseImage
+        courseImage: location.state.val.courseImage,
+        courseContent: location.state.val.courseContent || "" 
       });
     } else {
       setForm({
@@ -52,10 +54,11 @@ const InstructorAddcourse = () => {
         courseTitle: "",
         courseDescription: "",
         courseCategory: "",
-        courseImage: ""
+        courseImage: "",
+        courseContent: "" 
       });
     }
-  }, []);
+  }, [location.state]);
 
   return (
     <div className="instructor-addcourse-container">
@@ -107,6 +110,16 @@ const InstructorAddcourse = () => {
               name='courseImage'
               onChange={fieldValue}
               value={form.courseImage}
+              variant="outlined"
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="courseContent">Course Content URL</label>
+            <TextField
+              id="courseContent"
+              name='courseContent'
+              onChange={fieldValue}
+              value={form.courseContent}
               variant="outlined"
             />
           </div>

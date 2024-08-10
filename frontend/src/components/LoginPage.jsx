@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './LoginPage.css';
 
 const LoginPage = () => {
@@ -9,6 +10,8 @@ const LoginPage = () => {
     role: 'student', // Default role
   });
 
+  const navigate = useNavigate(); 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -17,9 +20,18 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5999/login', formData);
-      alert('Login successful');
-      // Handle token storage and redirect here
+      const response = await axios.post('http://localhost:5999/login', formData);
+      const { token } = response.data;
+
+      // Save token in localStorage
+      localStorage.setItem('authToken', token);
+
+      // Redirect based on role
+      if (formData.role === 'student') {
+        navigate('/student-dashboard'); 
+      } else if (formData.role === 'instructor') {
+        navigate('/instructor-dashboard'); 
+      }
     } catch (error) {
       alert('Incorrect email or password');
     }
@@ -32,15 +44,34 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit}>
           <div className="input-group">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="input-group">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} required />
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="input-group">
             <label htmlFor="role">Role</label>
-            <select id="role" name="role" value={formData.role} onChange={handleChange}>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
               <option value="student">Student</option>
               <option value="instructor">Instructor</option>
             </select>
