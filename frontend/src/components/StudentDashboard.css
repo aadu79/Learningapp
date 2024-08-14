@@ -1,7 +1,7 @@
 /* General Styles */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #021932;
+  background-color: #021932 !important;
   margin: 0;
   padding: 0;
   color: #333;
@@ -13,15 +13,10 @@ main {
   text-align: center;
 }
 
-main h2 {
+main h4 {
   font-size: 2.5rem;
   color: #f4f4f4e8;
   margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  background: linear-gradient(to right, #e34c3bec, #cb6b17eb);
-  -webkit-background-clip: text;
-  color: transparent;
 }
 
 /* Course List */
@@ -33,7 +28,7 @@ main h2 {
 }
 
 .course-item {
-  background-color: #ccc9c9dc;
+  background-color: #ccc9c9dc!important;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -47,6 +42,12 @@ main h2 {
 .course-item:hover {
   transform: translateY(-10px);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.course-card {
+  width: 100%;
+  height: 100%;
+  background-color: #ccc9c9dc!important;
 }
 
 .course-image {
@@ -67,6 +68,18 @@ main h2 {
 .course-content p {
   color: #666;
   font-size: 1rem;
+}
+
+/* Button Styles */
+.view-course-button {
+  background-color: #8e44ad !important; /* Matching the instructor button color */
+  color: #fff;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.view-course-button:hover {
+  background-color: #7a3b95 !important;
+  transform: scale(1.05);
 }
 
 /* Responsive Design */

@@ -1,72 +1,118 @@
 const express = require('express');
 const cors = require('cors');
-const User = require('./model/User');
-const Course = require('./model/Course'); // Importing the model as 'Course'
-require('./connection');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const app = express();
 
+// Import models
+const User = require('./model/User');
+const Course = require('./model/Course');
+
+// Connect to the database
+require('./connection');
+
+const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Unified Login
+// Unified Login Endpoint
 app.post('/login', async (req, res) => {
-  const { email, password, role } = req.body;
+    const { email, password, role } = req.body;
 
-  if (!['student', 'instructor'].includes(role)) {
-    return res.status(400).json({ error: 'Invalid role' });
-  }
-
-  try {
-    const user = await User.findOne({ email, role });
-
-    if (!user) {
-      return res.status(404).json({ error: `${role.charAt(0).toUpperCase() + role.slice(1)} not found` });
+    if (!['student', 'instructor'].includes(role)) {
+        return res.status(400).json({ error: 'Invalid role' });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    try {
+        const user = await User.findOne({ email, role });
 
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+        if (!user) {
+            return res.status(404).json({ error: `${role.charAt(0).toUpperCase() + role.slice(1)} not found` });
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: 'Invalid credentials' });
+        }
+
+        const token = jwt.sign({ email: user.email, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
+
+        res.status(200).json({ token });
+    } catch (error) {
+        console.error('Error logging in user:', error);
+        res.status(500).json({ error: 'Error logging in user' });
     }
-
-    const token = jwt.sign({ userId: user._id, role: user.role }, 'your_jwt_secret', { expiresIn: '1h' });
-
-    res.status(200).json({ token });
-  } catch (error) {
-    console.error('Error logging in user:', error);
-    res.status(500).json({ error: 'Error logging in user' });
-  }
 });
 
-// Unified Signup
+// Unified Signup Endpoint
 app.post('/signup', async (req, res) => {
-  const { name, email, password, phoneNumber, address, role } = req.body;
+    const { name, email, password, phoneNumber, address, role } = req.body;
 
-  if (!['student', 'instructor'].includes(role)) {
-    return res.status(400).json({ error: 'Invalid role' });
-  }
+    if (!['student', 'instructor'].includes(role)) {
+        return res.status(400).json({ error: 'Invalid role' });
+    }
 
-  try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({
-      name,
-      email,
-      password: hashedPassword,
-      phoneNumber,
-      address,
-      role,
-    });
+        const newUser = new User({
+            name,
+            email,
+            password: hashedPassword,
+            phoneNumber,
+            address,
+            role,
+        });
 
-    await newUser.save();
-    res.status(201).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} registered successfully` });
-  } catch (error) {
-    console.error('Error registering user:', error);
-    res.status(500).json({ error: 'Error registering user' });
-  }
+        await newUser.save();
+        res.status(201).json({ message: `${role.charAt(0).toUpperCase() + role.slice(1)} registered successfully` });
+    } catch (error) {
+        console.error('Error registering user:', error);
+        res.status(500).json({ error: 'Error registering user' });
+    }
 });
+
+// Endpoint to Get Enrolled Courses for a Student by Email
+app.get('/enrolledcourses/:email', async (req, res) => {
+    try {
+        const { email } = req.params;
+        const user = await User.findOne({ email }).populate('enrolledCourses');
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(200).json(user.enrolledCourses);
+    } catch (error) {
+        console.error('Error fetching enrolled courses:', error);
+        res.status(500).json({ error: 'Error fetching enrolled courses' });
+    }
+});
+
+// Endpoint to Enroll a Course for a Student using Email
+app.post('/enrollcourse', async (req, res) => {
+    const { courseId, email } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the course is already enrolled
+        if (user.enrolledCourses.includes(courseId)) {
+            return res.status(400).json({ error: 'Course already enrolled' });
+        }
+
+        user.enrolledCourses.push(courseId);
+        await user.save();
+
+        res.status(200).json({ message: 'Course enrolled successfully' });
+    } catch (error) {
+        console.error('Error enrolling course:', error);
+        res.status(500).json({ error: 'Error enrolling course' });
+    }
+});
+
 
 // Instructor Create Course
 app.post('/addcourse', async (req, res) => {
@@ -116,45 +162,6 @@ app.delete('/deletecourse/:id', async (req, res) => {
   }
 });
 
-// Get Enrolled Courses for a specific student
-app.get('/enrolledcourses/:userId', async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const user = await User.findById(userId).populate('enrolledCourses');
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    res.status(200).json(user.enrolledCourses);
-  } catch (error) {
-    console.error('Error fetching enrolled courses:', error);
-    res.status(500).json({ error: 'Error fetching enrolled courses' });
-  }
-});
-
-// Enroll Course for Student
-app.post('/enrollcourse', async (req, res) => {
-  const { courseId, userId } = req.body;
-
-  try {
-    console.log(`Enrolling course ${courseId} for user ${userId}`); // Debugging log
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    if (user.enrolledCourses.includes(courseId)) {
-      return res.status(400).json({ error: 'Course already enrolled' });
-    }
-
-    user.enrolledCourses.push(courseId);
-    await user.save();
-
-    res.status(200).json({ message: 'Course enrolled successfully' });
-  } catch (error) {
-    console.error('Error enrolling course:', error); // Improved error logging
-    res.status(500).json({ error: 'Error enrolling course' });
-  }
-});
-
+// Start the Server
 const PORT = 5999;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

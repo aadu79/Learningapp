@@ -23,6 +23,7 @@ const Navbar = () => {
     if (token) {
       try {
         const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        console.log('Decoded token:', decodedToken); // Debugging log
         setUserRole(decodedToken.role);
       } catch (error) {
         console.error('Failed to decode token:', error);
@@ -55,21 +56,30 @@ const Navbar = () => {
     }
   };
 
+  const menuItems = [];
   
-  const menuItems = [
-    ...(userRole === 'student'
-      ? [
-          <MenuItem key="courses" onClick={() => handleMenuClick('Courses')}><Typography textAlign="center">Courses</Typography></MenuItem>,
-          <MenuItem key="dashboard" onClick={() => handleMenuClick('Dashboard')}><Typography textAlign="center">Dashboard</Typography></MenuItem>,
-        ]
-      : userRole === 'instructor'
-      ? [
-          <MenuItem key="dashboard" onClick={() => handleMenuClick('Dashboard')}><Typography textAlign="center">Dashboard</Typography></MenuItem>,
-        ]
-      : [] // No menu items if not logged in
-    ),
-    <MenuItem key="logout" onClick={() => handleMenuClick('Logout')}><Typography textAlign="center">Logout</Typography></MenuItem>
-  ];
+  if (userRole === 'student') {
+    menuItems.push(
+      <MenuItem key="courses" onClick={() => handleMenuClick('Courses')}>
+        <Typography textAlign="center">Courses</Typography>
+      </MenuItem>,
+      <MenuItem key="dashboard" onClick={() => handleMenuClick('Dashboard')}>
+        <Typography textAlign="center">Dashboard</Typography>
+      </MenuItem>
+    );
+  } else if (userRole === 'instructor') {
+    menuItems.push(
+      <MenuItem key="dashboard" onClick={() => handleMenuClick('Dashboard')}>
+        <Typography textAlign="center">Dashboard</Typography>
+      </MenuItem>
+    );
+  }
+
+  menuItems.push(
+    <MenuItem key="logout" onClick={() => handleMenuClick('Logout')}>
+      <Typography textAlign="center">Logout</Typography>
+    </MenuItem>
+  );
 
   return (
     <AppBar position="static" className="navbar">
@@ -126,4 +136,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

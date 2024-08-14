@@ -10,7 +10,8 @@ const LoginPage = () => {
     role: 'student', // Default role
   });
 
-  const navigate = useNavigate(); 
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,17 +24,18 @@ const LoginPage = () => {
       const response = await axios.post('http://localhost:5999/login', formData);
       const { token } = response.data;
 
-      // Save token in localStorage
+      // Save email and token in localStorage
+      localStorage.setItem('userEmail', formData.email);
       localStorage.setItem('authToken', token);
 
       // Redirect based on role
       if (formData.role === 'student') {
-        navigate('/student-dashboard'); 
+        navigate('/student-dashboard');
       } else if (formData.role === 'instructor') {
-        navigate('/instructor-dashboard'); 
+        navigate('/instructor-dashboard');
       }
     } catch (error) {
-      alert('Incorrect email or password');
+      setError('Login failed. Please check your credentials.');
     }
   };
 
@@ -77,9 +79,10 @@ const LoginPage = () => {
             </select>
           </div>
           <button type="submit" className="btn login-btn">Login</button>
+          {error && <p className="error-message">{error}</p>}
         </form>
         <p className="signup-prompt">
-          Dont have an account? <a href="/signup">Sign up</a>
+          Don’t have an account? <a href="/signup">Sign up</a>
         </p>
       </div>
     </div>
